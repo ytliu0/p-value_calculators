@@ -1,0 +1,443 @@
+\documentclass[12pt]{article}
+\usepackage[margin=0.8in,top=0.8in,bottom=0.8in]{geometry}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\newcommand \beq {\begin{equation}}
+\newcommand \eeq {\end{equation}}
+\newcommand \beqn {\begin{eqnarray}}
+\newcommand \eeqn {\end{eqnarray}}
+\newcommand{\ve}[1]{\mbox{\boldmath $#1$}}
+
+\begin{document}
+\title{P-Value Calculators for Normal, $\chi^2$, t and F Distribution}
+\author{Yuk Tung Liu}
+\date{2018-01-27}
+\maketitle
+
+\section{Probability Distributions and P-Values}
+
+The probability density functions (pdf's) for the four distributions are:
+
+\beq
+  f_{\rm normal}(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \ \ , \ \  
+x \in (-\infty,\infty) 
+\label{eq:f_normal}
+\eeq
+
+\beq
+  f_{\chi^2}(x; k) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2-1} e^{-x/2} \ \ , \ \ 
+x \in (0,\infty)~{\rm if}~k=1,~{\rm otherwise}~x \in [0,\infty) 
+\label{eq:f_chi2}
+\eeq
+
+\beq
+  f_t(x;k) = \frac{\Gamma \left(\frac{k+1}{2}\right)}{\sqrt{k\pi} \Gamma(k/2)} 
+\left( 1+\frac{x^2}{k}\right)^{-\frac{k+1}{2}} \ \ , \ \ x \in (-\infty,\infty) 
+\label{eq:f_t}
+\eeq
+
+\beq
+  f_F(x; k_1,k_2) = \frac{1}{B\left(\frac{k_1}{2},\frac{k_2}{2}\right)} 
+\left( \frac{k_1}{k_2}\right)^{\frac{k_1}{2}} x^{\frac{k_1}{2}-1} 
+\left(1+\frac{k_1}{k_2}x\right)^{-\frac{k_1+k_2}{2}} , \  
+x \in (0,\infty)~{\rm if}~k_1=1,~{\rm otherwise}~x \in [0,\infty)
+\label{eq:f_F}
+\eeq
+Here $\Gamma$ is the gamma function and $B$ is the beta function. 
+I only consider the case in which 
+the degree of freedom parameters $k$, $k_1$ and $k_2$ are positive integers, 
+even though the functions are still well-defined when these parameters are 
+non-integers.
+
+The corresponding cumulative distribution functions (cdf's) are:
+\beq
+   F_{\rm normal}(x) = \frac{1}{2} \left[ 1+{\rm erf}\left(\frac{x}{\sqrt{2}}\right) 
+\right] = 1-\frac{1}{2}{\rm erfc}\left(\frac{x}{\sqrt{2}}\right) 
+\label{eq:F_normal} 
+\eeq
+
+\beq
+  F_{\chi^2}(x;k) = P\left(\frac{k}{2},\frac{x}{2}\right) = 
+1-Q\left(\frac{k}{2},\frac{x}{2}\right)
+\label{eq:F_chi2}
+\eeq
+
+\beq
+ F_t(x;k) = 1-\frac{1}{2}I_{\frac{k}{x^2+k}}\left( \frac{k}{2},\frac{1}{2}\right) 
+\label{eq:F_t}
+\eeq
+
+\beq
+  F_F(x;k_1,k_2) = I_{\frac{k_1 x}{k_2+k_1 x}}\left(\frac{k_1}{2},\frac{k_2}{2}\right) =
+1-I_{\frac{k_2}{k_2+k_1 x}}\left(\frac{k_2}{2},\frac{k_1}{2}\right)
+\label{eq:F_F}
+\eeq
+Here erf is the error function defined as 
+\beq
+  {\rm erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} dt 
+\eeq
+and erfc is the complementary error function defined as 
+\beq
+  {\rm erfc}(x) = 1-{\rm erf}(x) = \frac{2}{\sqrt{\pi}} \int_x^{\infty} e^{-t^2} dt .
+\eeq
+The incomplete gamma functions $P$ and $Q$ are defined as 
+\beq
+  P(a,x) \equiv \frac{\gamma(a,x)}{\Gamma(a)} \equiv \frac{1}{\Gamma(a)}\int_0^x 
+e^{-t} t^{a-1} dt \ \ \ \ \ (a>0) ,
+\label{eq:gammp}
+\eeq
+\beq
+  Q(a,x) \equiv 1-P(a,x) \equiv \frac{\Gamma(a,x)}{\Gamma(a)} \equiv \frac{1}{\Gamma(a)} 
+\int_x^{\infty} e^{-t} t^{a-1} dt \ \ \ \ \ (a>0) .
+\label{eq:gammq}
+\eeq
+The incomplete beta function $I$ is defined as 
+\beq
+  I_x(a,b) \equiv \frac{B_x(a,b)}{B(a,b)} \equiv \frac{1}{B(a,b)}\int_0^x 
+t^{a-1} (1-t)^{b-1} dt \ \ \ \ \ (a,b>0) .
+\label{eq:betai}
+\eeq
+
+For a given test statistic $X$ following a probability distribution with cdf $F(x)$, 
+the left-tail p-value is defined as 
+\beq
+  p_{\rm left}(x) = P(X <x) = F(x) ,
+\eeq
+and the right-tail p-value is defined as 
+\beq
+  p_{\rm right}(x) = P(X > x) = 1-F(x) \equiv F_c(x) .
+\eeq
+For the normal and t distribution, the two-tails p-value is defined as 
+\beq
+  p_{\rm 2tails}(x) = P(|X| > |x|) = 2 F_c(|x|) 
+\ \ \ \ \mbox{only for normal and t distribution}.
+\eeq
+Finally, the middle area of the two distributions is $P(-|x|<X<|x|) = 1-p_{\rm 2tails}(x)$. 
+
+As a result, the calculation of p-values boils down to the computation of the 
+four cdf's~(\ref{eq:F_normal})--(\ref{eq:F_F}), which involves the computation 
+of the error function, incomplete gamma function and incomplete beta function. 
+I use the algorithms described in the book {\it Numerical Recipes} to compute 
+these functions\footnote{The book has many editions. The one I use is {\it Numerical 
+Recipes in Fortran 77: The Art of Scientific Computing}, second edition, by Press, 
+Teukolsky, Vetterling and Flannery. An online version of the book is available 
+at \url{http://www.aip.de/groups/soe/local/numres/}.}, 
+which I briefly describe in the following Sections.
+
+\section{Error Function}
+
+The following approximate formula is used to compute the function:
+\beq
+  {\rm erf}(x) = \left\{ \begin{array}{ll} 1-\tau  & {\rm for } \ x \geq 0 \\
+\tau - 1 & {\rm for } \ x<0 \end{array} \right. ,
+\label{eq:erfx_approx}
+\eeq
+where
+\beqn
+  \tau &=& t \cdot \exp( -x^2  - 1.26551223 + 1.00002368t 
++ 0.37409196t^2 + 0.09678418t^3 \cr 
+&& - 0.18628806t^4 + 0.27886807t^5 - 1.13520398t^6 + 1.48851587t^7 \cr 
+&& - 0.82215223t^8 + 0.17087277 t^9)  
+\eeqn
+and 
+\beq
+  t = \frac{1}{1+0.5|x|} .
+\eeq
+The approximation has a maximal error of $1.2\times 10^{-7}$, which is more than enough 
+since all of our p-values are displayed only to four significant figures.
+
+The function {\tt pnorm(z)} in {\tt statFunction.js} is a JavaScipt code 
+that computes $p_{\rm right}(z)=1-F_{\rm normal}(z)$.
+
+\section{Incomplete Gamma Functions}
+
+The incomplete gamma functions $P(k/2,x/2)$ or $Q(k/2,x/2)$ are used 
+to compute the cdf of the $\chi^2$ distribution~(\ref{eq:F_chi2}).
+Here $k$ is a positive integer and $x \geq 0$. The computation involves 
+calculating the gamma function $\Gamma(k/2)$, and $\gamma(k/2,x)$ 
+or $\Gamma(k/2,x)$ defined in equations~(\ref{eq:gammp}) and (\ref{eq:gammq}).
+
+The calculation of $\Gamma(k/2)$ is relatively easy. Since $k$ is a 
+positive integer, $\Gamma(k/2)$ can be computed using $\Gamma(1/2)=\sqrt{\pi}$, 
+$\Gamma(1)=1$ and the identity $\Gamma(a)=(a-1)\Gamma(a-1)$. The result is 
+\beq
+  \Gamma\left(\frac{k}{2}\right) = \left \{ \begin{array}{ll} 
+\sqrt{\pi} & k=1 \\ \\ \sqrt{\pi}\cdot \frac{1}{2}\cdot \frac{3}{2}\cdot \frac{5}{2}\cdots 
+\left(\frac{k}{2}-1\right) & k=3,5,7,9,\cdots \\ \\ 
+\left(\frac{k}{2}-1\right)! & k=2,4,6,8,\cdots \end{array} \right. 
+\eeq
+It is more convenient to work with $\ln \Gamma(k/2)$ instead of $\Gamma(k/2)$ to prevent 
+floating-point overflow. The expression for $\ln \Gamma(k/2)$ is 
+\beq
+  \ln \Gamma\left(\frac{k}{2}\right) = \left \{ \begin{array}{ll} 
+\frac{1}{2}\ln \pi & k=1 \\ \\
+\frac{1}{2}\ln \pi + \sum\limits_{i=1}^{(k-1)/2} \ln \frac{2i-1}{2} & k=3,5,7,9,\cdots \\ \\ 
+\sum\limits_{i=2}^{(k-2)/2} \ln i & k=2,4,6,8,\cdots \end{array} \right.
+\eeq
+For computational efficiency, the values of $\ln \Gamma(k/2)$ for $k \leq 200$ are 
+saved in an array so that they need not be computed every time. For $k > 200$, 
+the Lanczos approximation is used instead:
+\beqn
+  \ln \Gamma(z) &=& \left( z + \frac{1}{2}\right) \ln (z+ 5.5) 
+- (z+5.5) + \ln \frac{\sqrt{2\pi}}{z} \cr\cr  
+&& + \ln \left( c_0 + \frac{c_1}{z+1}+\frac{c_2}{z+2}+\cdots + \frac{c_6}{z+6} 
++ \epsilon\right) ,
+\label{eq:lnGamma}
+\eeqn
+where 
+\beqn
+  c_0 &=& 1.000000000190015, \ c_1 = 76.18009172947146, \ c_2 = -86.50532032941677, \cr
+  c_3 &=& 24.01409824083091,  
+  c_4 = -1.231739572450155, \ c_5 = 1.208650973866179\times 10^{-3}, \cr
+  c_6 &=& -5.395239384953\times 10^{-6} ,
+\eeqn
+and the magnitude of the error term is $|\epsilon|<2\times 10^{-10}$ for 
+any positive value of $z$. 
+
+The function {\tt gamnln(n)} in {\tt statFunctions.js} is a JavaScript code that 
+calculates $\ln \Gamma(n/2)$.
+
+The function $\gamma(a,x)$ has the following series expansion. 
+\beq
+  \gamma(a,x) = e^{-x} x^a \sum_{n=0}^{\infty} \frac{\Gamma(a)}{\Gamma(a+1+n)}x^n 
+= e^{-x} x^a \sum_{n=0}^{\infty} \frac{x^n}{a(a+1)(a+2)\cdots (a+n)} .
+\label{eq:gser}
+\eeq
+The function $\Gamma(a,x)$ has the following continued-fraction expansion. 
+\beq
+  \Gamma(a,x)=e^{-x} x^a \left[ \frac{1}{x+1-a-}\  \frac{1\cdot (1-a)}{x+3-a-}\  
+\frac{2\cdot (2-a)}{x+5-a-} \cdots\right] \ \ \ (x>0) .
+\label{eq:gcf}
+\eeq
+The continued fraction can be computed using the modified Lentz's method (see 
+\href{http://www.aip.de/groups/soe/local/numres/bookfpdf/f5-2.pdf}{Section 5.2} 
+of {\it Numerical Recipes}).
+
+In the file {\tt statFunctions.js}, 
+the function {\tt gser(n,x)} computes $P(n/2,x)$ using the 
+series~(\ref{eq:gser}) for $\gamma(n/2,x)$. It is basically a JavaScript version of 
+the function {\tt gser} in {\it Numerical Recipes} 
+(\url{http://www.aip.de/groups/soe/local/numres/bookfpdf/f6-2.pdf}). The 
+function {\tt gcf(n,x)} computes $Q(n/2,x)$ using the continued-fraction 
+representation~(\ref{eq:gcf}) 
+for $\Gamma(n/2,x)$. It is basically a JavaScript version of the function {\tt gcf} 
+in {\it Numerical Recipes}. In both functions, the infinite sums are truncated at the 
+$m$th term when the $m$th term is smaller than {\tt eps} times the sum over these 
+$m$ terms. The parameter {\tt eps} is set to $10^{-8}$.
+
+The series expansion~(\ref{eq:gser}) converges rapidly for $x$ less than about $a+1$, 
+whereas the continued-fraction expansion~(\ref{eq:gcf}) converges rapidly for 
+$x$ greater than about $a+1$. In the file {\tt statFunctions.js}, the function 
+{\tt gammp(n,x)} returns $P(n/2,x)$ and {\tt gammq(n,x)} returns $Q(n/2,x)$. They 
+call {\tt gser} when $x < n/2+1$ and {\tt gcf} when $x \geq n/2+1$. These are 
+basically the JavaScipt version of the functions {\tt gammap} and {\tt gammq} 
+in {\it Numerical Recipes}. 
+
+Now that the functions for $P(n/2,x)$ and $Q(n/2,x)$ are available, the 
+cdf $F_{\chi^2}(\chi^2; n)$ can be computed easily. In {\tt statFunctions.js}, the function 
+{\tt pchisq(chi2,n,ptype)} returns $p_{\rm right}(\chi^2={\rm chi2};n)=1-F_{\chi^2}({\rm chi2};n)$ when {\tt ptype = 1} and 
+$p_{\rm left}(\chi^2={\rm chi2};n)=F_{\chi^2}({\rm chi2};n)$ when {\tt ptype = 2}.
+
+As a remark, the error functions can be expressed in terms of the incomplete 
+gamma functions as follows.
+\beq
+  {\rm erf}(x) = P\left(\frac{1}{2}, x^2\right) \ \ (x \geq 0) \ \ , \ \ 
+  {\rm erfc}(x) = Q\left( \frac{1}{2}, x^2\right) \ \ (x \geq 0) .
+\eeq
+This should not be too surprising as it is well-known that 
+the p-values associated with the normal distribution and the $\chi^2$ distribution 
+with $k=1$ are related by 
+\beq
+  p_{\rm 2tails}(Z=z) = p_{\rm right}(\chi^2=z^2;k=1) .
+\label{eq:pNormal_pChi2}
+\eeq
+We can therefore use the incomplete gamma functions to calculate the error functions. 
+However, the approximate expression~(\ref{eq:erfx_approx}) is still preferable 
+because it is much simplier.
+
+\section{Incomplete Beta Function}
+
+Incomplete beta functions are used to compute the cdf for the t and F distribution 
+(see~(\ref{eq:F_t}) and~(\ref{eq:F_F})). 
+
+Aside: Comparing the two equations, one can 
+deduce the well-known (or should be well-known) relationship between the p-values 
+associated with the t distribution with $k$ degrees of freedom and the F distribution 
+with $k_1=1$ and $k_2=k$:
+\beq
+  p_{\rm 2tails}(T=t; k) = p_{\rm right}(F=t^2; k_1=1, k_2=k) .
+\eeq
+
+The incomplete beta function $I_x(a,b)$ has the following continued fraction 
+representation. 
+\beq
+  I_x(a,b) = \frac{x^a (1-x)^b}{a B(a,b)} \left( \frac{1}{1+}\ \frac{d_1}{1+}\ 
+\frac{d_2}{1+}\cdots \right) ,
+\label{eq:betacf}
+\eeq
+where 
+\beq
+  d_{2m+1} = -\frac{(a+m)(a+b+m)x}{(a+2m)(a+2m+1)} \ \ \ , \ \ \ 
+  d_{2m} = \frac{m(b-m)x}{(a+2m-1)(a+2m)} .
+\eeq
+This continued fraction is evaluated in the function {\tt betacf(a,b,x)} in 
+{\tt statFunctions.js}. It is basically the JavaScript version of the 
+function {\tt betacf} in {\it Numerical Recipes} 
+(\url{http://www.aip.de/groups/soe/local/numres/bookfpdf/f6-4.pdf}). 
+The infinite sum is terminated at the $i$th term when the $i$th term is 
+smaller than {\tt eps} times the sum over the $i$ terms, where {\tt eps} 
+is set to $10^{-8}$.
+
+The continued fraction~(\ref{eq:betacf}) converges rapidly for $x<(a+1)/(a+b+2)$. 
+The case for $x>(a+1)/(a+b+2)$ can be calculated using the symmetry relation of the 
+beta function:
+\beq
+  I_x(a,b) = 1-I_{1-x}(b,a) .
+\eeq
+The function {\tt betai(n,m,x)} in {\tt statFunctions.js} returns 
+$I_x(n/2,m/2)$ for positive integers $n$ and $m$. It is basically 
+the JavaScript version of the function {\tt betai} in {\it Numerical Recipes}.
+
+The p-values associated with the t distribution are calculated in 
+the function {\tt pt(t,n,ptype)} in {\tt statFunctions.js}. The 
+function returns $p_{\rm left}(t;n)=F_t(t;n)$ when {\tt ptype = 0}, 
+$p_{\rm right}(t;n)=1-F_t(t;n)$ when {\tt ptype = 1}, 
+$p_{\rm 2tails}(t;n)=2[1-F_t(|t|;n)]$ when {\tt ptype = 2}, 
+and the middle area $=1-p_{\rm 2tails}(t;n)$ when {\tt ptype = 3}.
+
+The p-values associated with the F distribution are calculated in
+the function {\tt pf(F,df1,df2,ptype)}. It returns 
+$p_{\rm right}(F; {\rm df1,df2})=1-F_F(F; {\rm df1,df2})$ when 
+{\tt ptype = 1}, and $p_{\rm left}(F; {\rm df1,df2})=F_F(F; {\rm df1,df2})$ when 
+{\tt ptype = 2}.
+
+\section{Inverse of the CDFs} 
+
+Given a test statistic $X$ following a particular probability 
+distribution and a significance level $\alpha$, the critical value 
+is defined as the value of $x$ such that the associated p-value $p(x)=\alpha$. 
+Since the p-values are related to the cdf of the distribution, 
+computing the critical values involves calculating the inverse of 
+the cdf. In {\tt statFunctions.js}, the inverse is calculated by solving the 
+non-linear equation $p(x)-\alpha=0$ numerically using the bisection method.
+
+Since $p(x)$ is a monotonic function of $x$ and ranges from 0 to 1, 
+it is easy to find $(x_1,x_2)$ to bracket the root. Once $x_1$ and 
+$x_2$ are found, the bisection method is very robust in finding 
+the root. The function {\tt bisection(f, x1,x2, releps, abseps)} 
+in {\tt statFunctions.js} searches the root using the bisection method. 
+The input {\tt f} is a user-defined function of one variable; {\tt x1} 
+and {\tt x2} (with {\tt x2} $>$ {\tt x1}) are the initial values of 
+$x_1$ and $x_2$ that bracket the root; {\tt releps} and {\tt abseps} 
+are parameters controlling the relative and absolute errors. 
+Inside {\tt bisection}, 
+{\tt x1} and {\tt x2} are refined and the value of 
+{\tt x2-x1} is reduced by a factor of 2 in each iteration. The function 
+returns $x=(x_1+x_2)/2$ if one of the following conditions 
+is satisfied: 
+
+1. $x_2-x_1 < {\rm abseps}$;
+
+2. $|f(x)|< {\rm abseps}$, where $x=(x_1+x_2)/2$;
+
+3. $x_2-x_1 < {\rm releps} \cdot x$. 
+
+When it is used to compute the inverse of the cdf's, I find the best result 
+by setting the parameter {\tt abseps = 0} so that the 
+accuracy is controlled entirely by the relative error parameter {\tt releps}. 
+Since the result is only displayed to 4 significant figures in the 
+html pages, I set {\tt releps} 
+to $10^{-6}$, which is more than enough for the accuracy requirement.
+
+In {\tt statFunctions.js}, the four functions {\tt qnorm(p)}, {\tt qchisq(p,n,ptype)}, 
+{\tt qt(p,n,ptype)} and {\tt qf(F,df1,df2,ptype)} compute the inverse of 
+the functions {\tt pnorm(z)}, {\tt pchisq(chi2,n,ptype)}, {\tt pt(t,n,ptype)} 
+and {\tt pf(F,df1,df2,ptype)}. That is, {\tt qnorm(p)} returns a value {\tt z} so that 
+{\tt pnorm(z) = p}; {\tt qchisq(p,n,ptype)} returns a value {\tt chi2} so that 
+{\tt pchisq(chi2,n,ptype) = p}, and so on.
+
+\section{Summary of Functions in {\tt statFunctions.js}}
+
+{\bf Main functions:} 
+
+\begin{itemize} 
+\item {\tt pnorm(z)} 
+
+Returns the right-tail p-value $p_{\rm right}(z)=1-F_{\rm normal}(z)$ 
+for the normal distribution. 
+
+\item {\tt pchisq(chi2,n,ptype)}
+
+Returns p-values associated with the $\chi^2$ distribution: 
+$p_{\rm right}(\chi^2={\rm chi2};n)=1-F_{\chi^2}({\rm chi2};n)$ when {\tt ptype = 1} and
+$p_{\rm left}(\chi^2={\rm chi2};n)=F_{\chi^2}({\rm chi2};n)$ when {\tt ptype = 2}.
+
+\item {\tt pt(t,n,ptype)}
+
+Returns p-values associated with the t distribution:
+$p_{\rm left}(t;n)=F_t(t;n)$ when {\tt ptype = 0},
+$p_{\rm right}(t;n)=1-F_t(t;n)$ when {\tt ptype = 1},
+$p_{\rm 2tails}(t;n)=2[1-F_t(|t|;n)]$ when {\tt ptype = 2},
+and the middle area $=1-p_{\rm 2tails}(t;n)$ when {\tt ptype = 3}.
+
+\item {\tt pf(F,df1,df2,ptype)}
+
+Returns p-values associated with the F distribution:
+$p_{\rm right}(F; {\rm df1,df2})=1-F_F(F; {\rm df1,df2})$ when
+{\tt ptype = 1}, and $p_{\rm left}(F; {\rm df1,df2})=F_F(F; {\rm df1,df2})$ when
+{\tt ptype = 2}.
+
+\item {\tt qnorm(p)}, {\tt qchisq(p,n,ptype)}, {\tt qt(p,n,ptype)} and {\tt qf(F,df1,df2,ptype)} 
+
+Inverse of the four functions {\tt pnorm(z)}, {\tt pchisq(chi2,n,ptype)}, 
+{\tt pt(t,n,ptype)} and \\ {\tt pf(F,df1,df2,ptype)}.
+\end{itemize}
+
+{\bf Auxiliary functions}
+
+\begin{itemize}
+\item {\tt bisection(f, x1,x2, releps, abseps)} 
+
+Returns an estimate of the root of $f(x)=0$ from a user-supplied, one-variable function {\tt f}
+in the interval {\tt (x1,x2)} with the relative and absolute errors of the root 
+set by the parameters {\tt releps} and {\tt abseps}.
+
+\item {\tt gamnln(n)} 
+
+Returns $\ln \Gamma(n/2)$, where $n$ is a positive integer.
+
+\item {\tt gser(n,x)}
+
+Returns the incomplete gamma function $P(n/2,x)$ evaluated by a
+series representation.
+
+
+\item {\tt gcf(n,x)} 
+
+Returns the the incomplete gamma function $Q(n/2,x)$ evaluated by
+its continued fraction representation. 
+
+\item {\tt gammp(n,x)} 
+
+Returns the incomplete gamma function $P(n/2,x)$ by calling 
+{\tt gser} when $x<n/2+1$ and {\tt gcf} when $x \geq n/2+1$.
+
+\item {\tt gammq(n,x)} 
+
+Returns the incomplete gamma function $Q(n/2,x)$ by calling 
+{\tt gser} when $x<n/2+1$ and {\tt gcf} when $x \geq n/2+1$.
+
+\item {\tt betacf(a,b,x)} 
+
+Evaluates the incomplete beta function $I_x(a,b)$ by its continued 
+fraction representation. 
+
+\item {\tt betai(n,m,x)} 
+
+Returns the incomplete beta function $I_x(n/2,m/2)$ for positive integers 
+$n$ and $m$.
+
+\end{itemize}
+
+\end{document}

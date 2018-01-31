@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta name="keywords" content="Statistics, p value, F distribution" />
+<meta charset="UTF-8" />
+
+<head>
+<title>P Value Calculator, F dist.</title>
+<script src="statFunctions.js"></script>
+<script src="canvas.js"></script>
+<script src="pf.js"></script>
+<link rel="stylesheet" href="pvals.css">
+</head>
+
+<body onload="init()">
+<div id="wrapper">
+    
+<ul class="menu">
+  <li><a href="pnormal.html">Normal Distribution</a></li>
+  <li><a href="pchisq.html"><span class="greek">&chi;</span><sup>2</sup> Distribution</a></li>
+  <li><a href="pt.html">t Distribution</a></li>
+  <li class="active">F Distribution</li>
+</ul>
+
+<br />
+
+<h1>P-Value Calculator for F Distribution</h1>
+
+<br />
+
+<form name="input" action="" method="get">
+<p>Degree of freedom 1 (numerator) : <input type="number" id="df1" name="df1" min="1" step="1" /> </p>
+
+<p>Degree of freedom 2 (denominator): <input type="number" id="df2" name="df2" min="1" step="1" /> </p>
+
+<p>F-value: <input type="number" id="F" name="F" min="0" step="any" /> 
+&nbsp; &nbsp; 
+<input type="button" name="p value" value="Compute p-value" 
+onClick="PfromF_F(this.form)" /></p>
+
+<p>p-value: <input type="number" id="p-value" name="p_value" step="any" />
+&nbsp; &nbsp;
+<input type="button" name="F value" value="Compute F" 
+onClick="FfromP_F(this.form)" /></p>
+
+<p>p-value type: <br />
+<input onchange="changePtype(this.form,1)" type="radio" id="ptype1" 
+name="ptype1" value="1" checked="checked" />right tail<br />
+<input onchange="changePtype(this.form,2)" type="radio" id="ptype2"
+name="ptype2" value="2" />left tail</p>
+
+</form>
+
+<hr />
+
+<p id="input"></p>
+<p id="output"></p>
+<p id="Rcommand"></p>
+
+<br /> <br />
+<canvas id="Fcurve" width="535" height="300">
+  CANVAS NOT SUPPORTED IN THIS BROWSER!
+</canvas>
+
+<br /> <br />
+</div>
+</body>
+</html>

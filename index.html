@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta name="keywords" content="p-value calculators" />
+<meta charset="UTF-8" />
+
+<head>
+<title>P Value Calculators</title>
+<link rel="stylesheet" href="pvals.css">
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<ul class="menu">
+  <li><a href="pnormal.html">Normal Distribution</a></li>
+  <li><a href="pchisq.html"><span class="greek">&chi;</span><sup>2</sup> Distribution</a></li>
+  <li><a href="pt.html">t Distribution</a></li>
+  <li><a href="pf.html">F Distribution</a></li>
+</ul>
+
+<br />
+
+<h1>P-Value Calculators for Normal, <span class="greek">&chi;</span><sup>2</sup>, t and F Distributions</h1>
+    
+<p>These are the calculators I wrote for <a href="https://go.illinois.edu/stat200" target="_blank">Stat 200</a> at the University of Illinois at Urbana-Champaign.</p>
+    
+<p>The p-value calculators are written in JavaScript and are embedded in four html pages (links are at the top of this page). The numerical method is explained in <a href="docs/numerical_method.pdf" target="_blank">this documentation</a>.</p>
+    
+<br />
+<h2>Files</h2>
+    
+<p><code>index.html</code>: this html page.</p>
+    
+<p><code>pnormal.html</code>: html page for the p-value calculator for the normal distribution.<br />
+<code>pnormal.js</code>: JavaScript code for handling activities in pnormal.html.</p>
+    
+<p><code>pchisq.html</code>: html page for the p-value calculator for the <span class="greek">&chi;</span><sup>2</sup> distribution.<br />
+<code>pchisq.js</code>: JavaScript code for handling activities in pchisq.html.</p>
+    
+<p><code>pt.html</code>: html page for the p-value calculator for the t distribution.<br />
+<code>pt.js</code>: JavaScript code for handling activities in pt.html.</p>
+    
+<p><code>pf.html</code>: html page for the p-value calculator for the F distribution.<br />
+<code>pf.js</code>: Javascript code for handling activities in pf.html.</p>
+    
+<p><code>statFunctions.js</code>: JavaScript code for computating p-values for the normal, <span class="greek">&chi;</span><sup>2</sup>, t and F distributuions.</p>
+    
+<p><code>canvas.js</code>: JavaScript code for generating plots in pnormal.html, pchisq.html, pt.html and pf.html.</p>
+    
+<p><code>pvals.css</code>: css file for all the html pages.</p>
+    
+<p><code>docs/numerical_method.tex</code>, <code>docs/numerical_method.pdf</code>: LaTeX and pdf files explaining the numerical method used to calculate the p-values.</p>
+
+<br />
+</div>   
+</body>
+</html>

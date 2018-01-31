@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta name="keywords" content="Statistics, p value, t distribution" />
+<meta charset="UTF-8" />
+
+<head>
+<title>P Value Calculator, t dist.</title>
+<script src="statFunctions.js"></script>
+<script src="canvas.js"></script>
+<script src="pt.js"></script>
+<link rel="stylesheet" href="pvals.css">
+</head>
+
+<body onload="init()">
+    
+<div id="wrapper">
+
+<ul class="menu">
+  <li><a href="pnormal.html">Normal Distribution</a></li>
+  <li><a href="pchisq.html"><span class="greek">&chi;</span><sup>2</sup> Distribution</a></li>
+  <li class="active">t Distribution</li>
+  <li><a href="pf.html">F Distribution</a></li>
+</ul>
+
+<br />
+
+<h1>P-Value Calculator for t Distribution</h1>
+
+<br />
+
+<form name="input" action="" method="get">
+<p>Degree of freedom: <input type="number" id="df" name="df" min="1" step="1" /> </p>
+
+<p>t-value: <input type="number" id="t" name="t" step="any" /> 
+&nbsp; &nbsp; 
+<input type="button" name="p value" id="pbutton" value="Compute p-value" 
+onClick="Pfromt_t(this.form)" /></p>
+
+<p><span id="pdisplay">p-value</span>: <input type="number" id="p-value" name="p_value" step="any" />
+&nbsp; &nbsp;
+<input type="button" name="t value" value="Compute t" 
+onClick="tfromP_t(this.form)" /></p>
+
+<p>p-value type: <br />
+<input onchange="changePtype(this.form,0)" type="radio" id="ptype0" 
+name="ptype0" value="0" />left tail<br />
+<input onchange="changePtype(this.form,1)" type="radio" id="ptype1" 
+name="ptype1" value="1" checked="checked" />right tail<br />
+<input onchange="changePtype(this.form,2)" type="radio" id="ptype2"
+name="ptype2" value="2" />two tails<br />
+<input onchange="changePtype(this.form,3)" type="radio" id="ptype3"
+name="ptype3" value="3" />middle area</p>
+
+</form>
+
+<hr />
+
+<p id="input"></p>
+<p id="output"></p>
+<p id="Rcommand"></p>
+
+<br /> <br />
+<canvas id="tcurve" width="535" height="300">
+  CANVAS NOT SUPPORTED IN THIS BROWSER!
+</canvas>
+
+<br /> <br />
+</div>
+</body>
+</html>
